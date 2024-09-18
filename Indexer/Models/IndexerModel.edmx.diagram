@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="21b5fba1efbd48cf8bb7f1bef9a9e3e4" Name="Diagram1">
+        <EntityTypeShape EntityType="IndexerDBModel.DocTypeAInstrument" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="IndexerDBModel.DocTypeAName" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="IndexerDBModel.WorkItemImage" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="IndexerDBModel.WorkItem" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <AssociationConnector Association="IndexerDBModel.FK_DocTypeAInstruments_WorkItems" ManuallyRouted="false" />
+        <AssociationConnector Association="IndexerDBModel.FK_DocTypeANames_DocTypeAInstruments" ManuallyRouted="false" />
+        <AssociationConnector Association="IndexerDBModel.FK_WorkItemImages_WorkItems" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="IndexerDBModel.DocType" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="IndexerDBModel.FK_WorkItems_DocTypes" />
+        <EntityTypeShape EntityType="IndexerDBModel.DocStatus" Width="1.5" PointX="3" PointY="9.125" />
+        <EntityTypeShape EntityType="IndexerDBModel.NameType" Width="1.5" PointX="5.375" PointY="5.875" />
+        <AssociationConnector Association="IndexerDBModel.FK_DocStatuses_DocStatuses" />
+        <AssociationConnector Association="IndexerDBModel.FK_DocTypeANames_NameTypes" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

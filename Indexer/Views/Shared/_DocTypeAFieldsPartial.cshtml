@@ -1,0 +1,167 @@
+﻿@model Indexer.ViewModels.DocTypeAVM
+
+@Html.HiddenFor(model => model.WorkItemID)
+@Html.HiddenFor(model => model.DocTypeAInstrumentID)
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="d-inline-block" style="font-size: 1.15em; border-bottom: solid 2px #000000a1">
+            <span class="mb-0">File Number:</span>
+            @Html.DisplayFor(model => model.WorkItem.FileNumber)
+        </div>
+        <div class="d-inline-block">
+            <i class="fa fa-question-circle fa" style="font-size:1.25em" data-toggle="tooltip" data-placement="right" title="Here's some heads-up text to remind the user of some useful information'."></i>
+        </div>
+    </div>
+    <div class=" col-md-3 align-self-center">
+        <div class="form-check form-check-inline">
+            @Html.EditorFor(model => model.NotWorkable, new { htmlAttributes = new { @class = "form-check-input big-checkbox" } })
+            @Html.LabelFor(model => model.NotWorkable, htmlAttributes: new { @class = "form-check-label" })
+        </div>
+    </div>
+    <div class="col-md-3">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#shortcutModal">
+            Shortcuts
+        </button>
+    </div>
+</div>
+<div id="notes-section" class="col-md-12 mb-3">
+    @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label" })
+    @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @rows = "2", @placeholder = "Explain why this item is not workable" })
+    @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+</div>
+
+
+<div id="instrument-info" class="row mb-3">
+    <div class=" col-md-3">
+        @Html.LabelFor(model => model.ApplDate, htmlAttributes: new { @class = "control-label" })
+        <div>
+            @Html.EditorFor(model => model.ApplDate, new { htmlAttributes = new { @type="date", @class = "form-control form-control-sm", placeholder = "MM/DD/YYYY" } })
+            @Html.ValidationMessageFor(model => model.ApplDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class=" col-md-3">
+        @Html.LabelFor(model => model.MALDate, htmlAttributes: new { @class = "control-label" })
+        <div>
+            @Html.EditorFor(model => model.MALDate, new { htmlAttributes = new { @type = "date", @class = "form-control form-control-sm", placeholder = "MM/DD/YYYY" } })
+            @Html.ValidationMessageFor(model => model.MALDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        @Html.LabelFor(model => model.MARDate, htmlAttributes: new { @class = "control-label" })
+        <div>
+            @Html.EditorFor(model => model.MARDate, new { htmlAttributes = new { @type = "date", @class = "form-control form-control-sm", placeholder = "MM/DD/YYYY" } })
+            @Html.ValidationMessageFor(model => model.MARDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        @Html.LabelFor(model => model.SelectedDocStatus, new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.SelectedDocStatus, new SelectList(Model.DocStatuses, "Value", "Text", Model.SelectedDocStatus), "--Select--", htmlAttributes: new { @class = "form-control form-control-sm" })
+        @Html.ValidationMessageFor(model => model.SelectedDocStatus, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<hr class="mb-3" />
+<div id="nameTypes">
+    @if (Model.Names != null)
+    {
+        for (int i = 0; i < Model.Names.Count; i++)
+        {
+
+            var nameTypeItem = Model.NameTypes.Where(x => x.Value == Model.Names[i].NameTypeID.ToString()).FirstOrDefault();
+            string nameType = nameTypeItem == null ? "" : nameTypeItem.Text;
+
+            <div class="name-type-row">
+                <h5 class="my-1 d-inline-block">
+                    <span style="border-bottom: solid 2px #000000a1">@nameType</span>
+                </h5>
+
+                @Html.HiddenFor(model => model.Names[i].DocTypeANameID, new { })
+                @Html.HiddenFor(model => model.Names[i].DocTypeAInstrumentID, new { })
+                @Html.HiddenFor(model => model.Names[i].NameTypeID, new { })
+                @*NotWorkable and SelectedReturnStatus are included so ExpressiveAnnotations validation can update whether fields are required or not*@
+                @Html.HiddenFor(model => model.Names[i].NotWorkable, new { })
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Names[i].FirstName, new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Names[i].FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Names[i].FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Names[i].MiddleName, new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Names[i].MiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Names[i].MiddleName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Names[i].LastName, new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Names[i].LastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Names[i].LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.Names[i].Suffix, new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Names[i].Suffix, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Names[i].Suffix, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.Names[i].Age, new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Names[i].Age, new { htmlAttributes = new { @class = "form-control", @type="number"} })
+                            @Html.ValidationMessageFor(model => model.Names[i].Age, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="modal fade" id="shortcutModal" tabindex="-1" aria-labelledby="Close" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Keyboard Shortcuts</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Previous Tab</td>
+                                <td>Ctrl + ←</td>
+                            </tr>
+                            <tr>
+                                <td>Next Tab</td>
+                                <td>Ctrl + → </td>
+                            </tr>
+                            <tr>
+                                <td>Autofill dates based on Application Date</td>
+                                <td>Alt + P</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,30 @@
+﻿
+@model IEnumerable<Indexer.Models.WorkItemImage>
+@{
+}
+<div class="row justify-content-center">
+    <ul class="nav nav-tabs col-md-8 mb-3" id="tab-container">
+        @*Create a named tab for each image associated with the work item*@
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <li class="nav-item">
+                <button class="nav-link @(i == 0 ? "active" : String.Empty)" id="tab-@i.ToString()" type="button" data-index="@i.ToString()" data-bs-toggle="tab" data-bs-target="#document-@i.ToString()" role="tab" aria-controls="@Model.ElementAt(i).ImageDescription" aria-selected="true">@Model.ElementAt(i).ImageDescription</button>
+            </li>
+        }
+
+    </ul>
+</div>
+<div class="row justify-content-center">
+    <div class="tab-content col-md-8" id="image-viewer-tab-content">
+        @*Then display each image in the corresponding tab. *@
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <div class="tab-pane fade show @(i == 0 ? "active" : String.Empty)" id="document-@i.ToString()" role="tabpanel" aria-labelledby="tab-@i.ToString()">
+                @*Using a basic image for testing purposes, this would typically be a pdf or other document in a document viewer.*@
+                <img class="border border-2 w-100" src="@Url.Content(String.Concat("~",@Model.ElementAt(i).ImagePath))" />
+            </div>
+        }
+    </div>
+</div>
+
+

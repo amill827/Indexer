@@ -1,0 +1,61 @@
+﻿@model Indexer.ViewModels.ExportVM
+@{
+    ViewBag.Title = "Export";
+}
+
+<div class="container">
+    <h2>Export Document Type A</h2>
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+            @using (Html.BeginForm("Export", "DocTypeA", FormMethod.Post, new { @id = "export-form", @class = "control-label" }))
+            {
+                if (Model.ExportSuccess)
+                {
+                    <div class="alert alert-success">
+                        <span>All work items were successfully exported!</span>
+                    </div>
+                }
+
+                else
+                {
+                    if (Model.ReadyExportCount > 0)
+                    {
+                        <p>There are @Model.ReadyExportCount Work Items ready to be exported.</p>
+
+
+                        <p>Click "Export" below to start the process.</p>
+                        <button id="export-button" type="submit" class="btn btn-primary" value="">Export</button>
+                    }
+                    else
+                    {
+                        <p>There are no Work Items ready to be exported for this Work Action.</p>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        //Disable button when submitting form
+        $(document).on('submit', '#export-form', function () {
+            var button = $(this).find(':submit');
+            setTimeout(function () {
+                button.attr('disabled', 'disabled');
+            }, 0);
+        });
+        //Enable button if form was invalid
+        $(document).on('invalid-form.validate', '#export-form', function () {
+            var button = $(this).find(':submit');
+            setTimeout(function () {
+                button.removeAttr('disabled');
+            }, 1);
+        });
+
+    });
+</script>
+

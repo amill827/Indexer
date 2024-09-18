@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="IndexerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DocStatuses">
+          <Key>
+            <PropertyRef Name="DocStatusID" />
+          </Key>
+          <Property Name="DocStatusID" Type="int" Nullable="false" />
+          <Property Name="DocTypeID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DocTypeAInstruments">
+          <Key>
+            <PropertyRef Name="DocTypeAInstrumentID" />
+          </Key>
+          <Property Name="DocTypeAInstrumentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkItemID" Type="int" Nullable="false" />
+          <Property Name="ApplDate" Type="datetime" Nullable="false" />
+          <Property Name="MALDate" Type="datetime" />
+          <Property Name="MARDate" Type="datetime" />
+          <Property Name="DocStatus" Type="int" Nullable="false" />
+          <Property Name="AddedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="100" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DocTypeANames">
+          <Key>
+            <PropertyRef Name="DocTypeANameID" />
+          </Key>
+          <Property Name="DocTypeANameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocTypeAInstrumentID" Type="int" Nullable="false" />
+          <Property Name="NameTypeID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="Suffix" Type="varchar" MaxLength="10" />
+          <Property Name="Age" Type="smallint" />
+        </EntityType>
+        <EntityType Name="DocTypes">
+          <Key>
+            <PropertyRef Name="DocTypeID" />
+          </Key>
+          <Property Name="DocTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NameTypes">
+          <Key>
+            <PropertyRef Name="NameTypeID" />
+          </Key>
+          <Property Name="NameTypeID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WorkItemImages">
+          <Key>
+            <PropertyRef Name="WorkItemImageID" />
+          </Key>
+          <Property Name="WorkItemImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkItemID" Type="int" Nullable="false" />
+          <Property Name="ImageIdentifier" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="ImagePath" Type="varchar" MaxLength="400" />
+          <Property Name="ImageDescription" Type="varchar" MaxLength="50" />
+          <Property Name="AddedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="100" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WorkItems">
+          <Key>
+            <PropertyRef Name="WorkItemID" />
+          </Key>
+          <Property Name="WorkItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocTypeID" Type="int" Nullable="false" />
+          <Property Name="FileNumber" Type="varchar" MaxLength="30" />
+          <Property Name="LockedBy" Type="varchar" MaxLength="100" />
+          <Property Name="LockedOn" Type="datetime" />
+          <Property Name="NotWorkable" Type="bit" Nullable="false" />
+          <Property Name="Notes" Type="varchar" MaxLength="512" />
+          <Property Name="CompletedBy" Type="varchar" MaxLength="100" />
+          <Property Name="CompletedOn" Type="datetime" />
+          <Property Name="VerifiedBy" Type="varchar" MaxLength="100" />
+          <Property Name="VerifiedOn" Type="datetime" />
+          <Property Name="ExportedOn" Type="datetime" />
+          <Property Name="AddedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="100" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_DocStatuses_DocStatuses">
+          <End Role="DocTypes" Type="Self.DocTypes" Multiplicity="1" />
+          <End Role="DocStatuses" Type="Self.DocStatuses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocTypes">
+              <PropertyRef Name="DocTypeID" />
+            </Principal>
+            <Dependent Role="DocStatuses">
+              <PropertyRef Name="DocTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocTypeAInstruments_WorkItems">
+          <End Role="WorkItems" Type="Self.WorkItems" Multiplicity="1" />
+          <End Role="DocTypeAInstruments" Type="Self.DocTypeAInstruments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkItems">
+              <PropertyRef Name="WorkItemID" />
+            </Principal>
+            <Dependent Role="DocTypeAInstruments">
+              <PropertyRef Name="WorkItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocTypeANames_DocTypeAInstruments">
+          <End Role="DocTypeAInstruments" Type="Self.DocTypeAInstruments" Multiplicity="1" />
+          <End Role="DocTypeANames" Type="Self.DocTypeANames" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocTypeAInstruments">
+              <PropertyRef Name="DocTypeAInstrumentID" />
+            </Principal>
+            <Dependent Role="DocTypeANames">
+              <PropertyRef Name="DocTypeAInstrumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocTypeANames_NameTypes">
+          <End Role="NameTypes" Type="Self.NameTypes" Multiplicity="1" />
+          <End Role="DocTypeANames" Type="Self.DocTypeANames" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NameTypes">
+              <PropertyRef Name="NameTypeID" />
+            </Principal>
+            <Dependent Role="DocTypeANames">
+              <PropertyRef Name="NameTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkItemImages_WorkItems">
+          <End Role="WorkItems" Type="Self.WorkItems" Multiplicity="1" />
+          <End Role="WorkItemImages" Type="Self.WorkItemImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkItems">
+              <PropertyRef Name="WorkItemID" />
+            </Principal>
+            <Dependent Role="WorkItemImages">
+              <PropertyRef Name="WorkItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkItems_DocTypes">
+          <End Role="DocTypes" Type="Self.DocTypes" Multiplicity="1" />
+          <End Role="WorkItems" Type="Self.WorkItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocTypes">
+              <PropertyRef Name="DocTypeID" />
+            </Principal>
+            <Dependent Role="WorkItems">
+              <PropertyRef Name="DocTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IndexerDBModelStoreContainer">
+          <EntitySet Name="DocStatuses" EntityType="Self.DocStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocTypeAInstruments" EntityType="Self.DocTypeAInstruments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocTypeANames" EntityType="Self.DocTypeANames" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocTypes" EntityType="Self.DocTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NameTypes" EntityType="Self.NameTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkItemImages" EntityType="Self.WorkItemImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkItems" EntityType="Self.WorkItems" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DocStatuses_DocStatuses" Association="Self.FK_DocStatuses_DocStatuses">
+            <End Role="DocTypes" EntitySet="DocTypes" />
+            <End Role="DocStatuses" EntitySet="DocStatuses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocTypeAInstruments_WorkItems" Association="Self.FK_DocTypeAInstruments_WorkItems">
+            <End Role="WorkItems" EntitySet="WorkItems" />
+            <End Role="DocTypeAInstruments" EntitySet="DocTypeAInstruments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocTypeANames_DocTypeAInstruments" Association="Self.FK_DocTypeANames_DocTypeAInstruments">
+            <End Role="DocTypeAInstruments" EntitySet="DocTypeAInstruments" />
+            <End Role="DocTypeANames" EntitySet="DocTypeANames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocTypeANames_NameTypes" Association="Self.FK_DocTypeANames_NameTypes">
+            <End Role="NameTypes" EntitySet="NameTypes" />
+            <End Role="DocTypeANames" EntitySet="DocTypeANames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkItemImages_WorkItems" Association="Self.FK_WorkItemImages_WorkItems">
+            <End Role="WorkItems" EntitySet="WorkItems" />
+            <End Role="WorkItemImages" EntitySet="WorkItemImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkItems_DocTypes" Association="Self.FK_WorkItems_DocTypes">
+            <End Role="DocTypes" EntitySet="DocTypes" />
+            <End Role="WorkItems" EntitySet="WorkItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IndexerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DocTypeAInstrument">
+          <Key>
+            <PropertyRef Name="DocTypeAInstrumentID" />
+          </Key>
+          <Property Name="DocTypeAInstrumentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkItemID" Type="Int32" Nullable="false" />
+          <Property Name="ApplDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MALDate" Type="DateTime" Precision="3" />
+          <Property Name="MARDate" Type="DateTime" Precision="3" />
+          <Property Name="DocStatus" Type="Int32" Nullable="false" />
+          <Property Name="AddedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WorkItem" Relationship="Self.FK_DocTypeAInstruments_WorkItems" FromRole="DocTypeAInstruments" ToRole="WorkItems" />
+          <NavigationProperty Name="DocTypeANames" Relationship="Self.FK_DocTypeANames_DocTypeAInstruments" FromRole="DocTypeAInstruments" ToRole="DocTypeANames" />
+        </EntityType>
+        <EntityType Name="DocTypeAName">
+          <Key>
+            <PropertyRef Name="DocTypeANameID" />
+          </Key>
+          <Property Name="DocTypeANameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocTypeAInstrumentID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Suffix" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Age" Type="Int16" />
+          <NavigationProperty Name="DocTypeAInstrument" Relationship="Self.FK_DocTypeANames_DocTypeAInstruments" FromRole="DocTypeANames" ToRole="DocTypeAInstruments" />
+          <Property Name="NameTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NameType" Relationship="IndexerDBModel.FK_DocTypeANames_NameTypes" FromRole="DocTypeAName" ToRole="NameType" />
+        </EntityType>
+        <EntityType Name="WorkItemImage">
+          <Key>
+            <PropertyRef Name="WorkItemImageID" />
+          </Key>
+          <Property Name="WorkItemImageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkItemID" Type="Int32" Nullable="false" />
+          <Property Name="ImageIdentifier" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ImagePath" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="ImageDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AddedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WorkItem" Relationship="Self.FK_WorkItemImages_WorkItems" FromRole="WorkItemImages" ToRole="WorkItems" />
+        </EntityType>
+        <EntityType Name="WorkItem">
+          <Key>
+            <PropertyRef Name="WorkItemID" />
+          </Key>
+          <Property Name="WorkItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocTypeID" Type="Int32" Nullable="false" />
+          <Property Name="FileNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="LockedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LockedOn" Type="DateTime" Precision="3" />
+          <Property Name="NotWorkable" Type="Boolean" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="CompletedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CompletedOn" Type="DateTime" Precision="3" />
+          <Property Name="VerifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VerifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ExportedOn" Type="DateTime" Precision="3" />
+          <Property Name="AddedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DocTypeAInstruments" Relationship="Self.FK_DocTypeAInstruments_WorkItems" FromRole="WorkItems" ToRole="DocTypeAInstruments" />
+          <NavigationProperty Name="WorkItemImages" Relationship="Self.FK_WorkItemImages_WorkItems" FromRole="WorkItems" ToRole="WorkItemImages" />
+          <NavigationProperty Name="DocType" Relationship="IndexerDBModel.FK_WorkItems_DocTypes" FromRole="WorkItem" ToRole="DocType" />
+        </EntityType>
+        <Association Name="FK_DocTypeAInstruments_WorkItems">
+          <End Role="WorkItems" Type="Self.WorkItem" Multiplicity="1" />
+          <End Role="DocTypeAInstruments" Type="Self.DocTypeAInstrument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkItems">
+              <PropertyRef Name="WorkItemID" />
+            </Principal>
+            <Dependent Role="DocTypeAInstruments">
+              <PropertyRef Name="WorkItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocTypeANames_DocTypeAInstruments">
+          <End Role="DocTypeAInstruments" Type="Self.DocTypeAInstrument" Multiplicity="1" />
+          <End Role="DocTypeANames" Type="Self.DocTypeAName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocTypeAInstruments">
+              <PropertyRef Name="DocTypeAInstrumentID" />
+            </Principal>
+            <Dependent Role="DocTypeANames">
+              <PropertyRef Name="DocTypeAInstrumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkItemImages_WorkItems">
+          <End Role="WorkItems" Type="Self.WorkItem" Multiplicity="1" />
+          <End Role="WorkItemImages" Type="Self.WorkItemImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkItems">
+              <PropertyRef Name="WorkItemID" />
+            </Principal>
+            <Dependent Role="WorkItemImages">
+              <PropertyRef Name="WorkItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IndexerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DocTypeAInstruments" EntityType="Self.DocTypeAInstrument" />
+          <EntitySet Name="DocTypeANames" EntityType="Self.DocTypeAName" />
+          <EntitySet Name="WorkItemImages" EntityType="Self.WorkItemImage" />
+          <EntitySet Name="WorkItems" EntityType="Self.WorkItem" />
+          <AssociationSet Name="FK_DocTypeAInstruments_WorkItems" Association="Self.FK_DocTypeAInstruments_WorkItems">
+            <End Role="WorkItems" EntitySet="WorkItems" />
+            <End Role="DocTypeAInstruments" EntitySet="DocTypeAInstruments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocTypeANames_DocTypeAInstruments" Association="Self.FK_DocTypeANames_DocTypeAInstruments">
+            <End Role="DocTypeAInstruments" EntitySet="DocTypeAInstruments" />
+            <End Role="DocTypeANames" EntitySet="DocTypeANames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkItemImages_WorkItems" Association="Self.FK_WorkItemImages_WorkItems">
+            <End Role="WorkItems" EntitySet="WorkItems" />
+            <End Role="WorkItemImages" EntitySet="WorkItemImages" />
+          </AssociationSet>
+          <EntitySet Name="DocTypes" EntityType="IndexerDBModel.DocType" />
+          <AssociationSet Name="FK_WorkItems_DocTypes" Association="IndexerDBModel.FK_WorkItems_DocTypes">
+            <End Role="DocType" EntitySet="DocTypes" />
+            <End Role="WorkItem" EntitySet="WorkItems" />
+          </AssociationSet>
+          <EntitySet Name="DocStatuses" EntityType="IndexerDBModel.DocStatus" />
+          <EntitySet Name="NameTypes" EntityType="IndexerDBModel.NameType" />
+          <AssociationSet Name="FK_DocStatuses_DocStatuses" Association="IndexerDBModel.FK_DocStatuses_DocStatuses">
+            <End Role="DocType" EntitySet="DocTypes" />
+            <End Role="DocStatus" EntitySet="DocStatuses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocTypeANames_NameTypes" Association="IndexerDBModel.FK_DocTypeANames_NameTypes">
+            <End Role="NameType" EntitySet="NameTypes" />
+            <End Role="DocTypeAName" EntitySet="DocTypeANames" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DocType">
+          <Key>
+            <PropertyRef Name="DocTypeID" />
+          </Key>
+          <Property Name="DocTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="WorkItems" Relationship="IndexerDBModel.FK_WorkItems_DocTypes" FromRole="DocType" ToRole="WorkItem" />
+          <NavigationProperty Name="DocStatuses" Relationship="IndexerDBModel.FK_DocStatuses_DocStatuses" FromRole="DocType" ToRole="DocStatus" />
+        </EntityType>
+        <Association Name="FK_WorkItems_DocTypes">
+          <End Type="IndexerDBModel.DocType" Role="DocType" Multiplicity="1" />
+          <End Type="IndexerDBModel.WorkItem" Role="WorkItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocType">
+              <PropertyRef Name="DocTypeID" />
+            </Principal>
+            <Dependent Role="WorkItem">
+              <PropertyRef Name="DocTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DocStatus">
+          <Key>
+            <PropertyRef Name="DocStatusID" />
+          </Key>
+          <Property Name="DocStatusID" Type="Int32" Nullable="false" />
+          <Property Name="DocTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DocType" Relationship="IndexerDBModel.FK_DocStatuses_DocStatuses" FromRole="DocStatus" ToRole="DocType" />
+        </EntityType>
+        <EntityType Name="NameType">
+          <Key>
+            <PropertyRef Name="NameTypeID" />
+          </Key>
+          <Property Name="NameTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DocTypeANames" Relationship="IndexerDBModel.FK_DocTypeANames_NameTypes" FromRole="NameType" ToRole="DocTypeAName" />
+        </EntityType>
+        <Association Name="FK_DocStatuses_DocStatuses">
+          <End Type="IndexerDBModel.DocType" Role="DocType" Multiplicity="1" />
+          <End Type="IndexerDBModel.DocStatus" Role="DocStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocType">
+              <PropertyRef Name="DocTypeID" />
+            </Principal>
+            <Dependent Role="DocStatus">
+              <PropertyRef Name="DocTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocTypeANames_NameTypes">
+          <End Type="IndexerDBModel.NameType" Role="NameType" Multiplicity="1" />
+          <End Type="IndexerDBModel.DocTypeAName" Role="DocTypeAName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NameType">
+              <PropertyRef Name="NameTypeID" />
+            </Principal>
+            <Dependent Role="DocTypeAName">
+              <PropertyRef Name="NameTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IndexerDBModelStoreContainer" CdmEntityContainer="IndexerDBEntities">
+          <EntitySetMapping Name="DocTypeAInstruments">
+            <EntityTypeMapping TypeName="IndexerDBModel.DocTypeAInstrument">
+              <MappingFragment StoreEntitySet="DocTypeAInstruments">
+                <ScalarProperty Name="DocTypeAInstrumentID" ColumnName="DocTypeAInstrumentID" />
+                <ScalarProperty Name="WorkItemID" ColumnName="WorkItemID" />
+                <ScalarProperty Name="ApplDate" ColumnName="ApplDate" />
+                <ScalarProperty Name="MALDate" ColumnName="MALDate" />
+                <ScalarProperty Name="MARDate" ColumnName="MARDate" />
+                <ScalarProperty Name="DocStatus" ColumnName="DocStatus" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocTypeANames">
+            <EntityTypeMapping TypeName="IndexerDBModel.DocTypeAName">
+              <MappingFragment StoreEntitySet="DocTypeANames">
+                <ScalarProperty Name="NameTypeID" ColumnName="NameTypeID" />
+                <ScalarProperty Name="DocTypeANameID" ColumnName="DocTypeANameID" />
+                <ScalarProperty Name="DocTypeAInstrumentID" ColumnName="DocTypeAInstrumentID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Suffix" ColumnName="Suffix" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkItemImages">
+            <EntityTypeMapping TypeName="IndexerDBModel.WorkItemImage">
+              <MappingFragment StoreEntitySet="WorkItemImages">
+                <ScalarProperty Name="WorkItemImageID" ColumnName="WorkItemImageID" />
+                <ScalarProperty Name="WorkItemID" ColumnName="WorkItemID" />
+                <ScalarProperty Name="ImageIdentifier" ColumnName="ImageIdentifier" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="ImageDescription" ColumnName="ImageDescription" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkItems">
+            <EntityTypeMapping TypeName="IndexerDBModel.WorkItem">
+              <MappingFragment StoreEntitySet="WorkItems">
+                <ScalarProperty Name="WorkItemID" ColumnName="WorkItemID" />
+                <ScalarProperty Name="DocTypeID" ColumnName="DocTypeID" />
+                <ScalarProperty Name="FileNumber" ColumnName="FileNumber" />
+                <ScalarProperty Name="LockedBy" ColumnName="LockedBy" />
+                <ScalarProperty Name="LockedOn" ColumnName="LockedOn" />
+                <ScalarProperty Name="NotWorkable" ColumnName="NotWorkable" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="CompletedBy" ColumnName="CompletedBy" />
+                <ScalarProperty Name="CompletedOn" ColumnName="CompletedOn" />
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
+                <ScalarProperty Name="VerifiedOn" ColumnName="VerifiedOn" />
+                <ScalarProperty Name="ExportedOn" ColumnName="ExportedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocTypes">
+            <EntityTypeMapping TypeName="IndexerDBModel.DocType">
+              <MappingFragment StoreEntitySet="DocTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DocTypeID" ColumnName="DocTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocStatuses">
+            <EntityTypeMapping TypeName="IndexerDBModel.DocStatus">
+              <MappingFragment StoreEntitySet="DocStatuses">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DocTypeID" ColumnName="DocTypeID" />
+                <ScalarProperty Name="DocStatusID" ColumnName="DocStatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NameTypes">
+            <EntityTypeMapping TypeName="IndexerDBModel.NameType">
+              <MappingFragment StoreEntitySet="NameTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="NameTypeID" ColumnName="NameTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,32 @@
+﻿@model Indexer.ViewModels.DocTypeAVM
+@{
+    ViewBag.Title = "Index Document";
+}
+
+<div class="row">
+    <div id="document-index" class="col-md-4 border-end">
+        <h2>Index Document</h2>
+
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+        @using (Html.BeginForm("IndexDocument", "DocTypeA", FormMethod.Post, new { @id = "work-item-form", @class = "control-label" }))
+        {
+            @Html.Partial("_DocTypeAFieldsPartial", Model)
+
+            <div class="form-row my-3">
+                <div class="col-auto ms-auto">
+                    <button type="submit" class="btn btn-primary" name="Complete" value="">Mark Complete</button>
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="col-md-8">
+        @if (Model.WorkItem != null)
+        {
+            @Html.Partial("_ImageViewerPartial", Model.WorkItem.WorkItemImages)
+        }
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/keybinds.js")
+@Scripts.Render("~/Scripts/DocTypeAFields.js")
